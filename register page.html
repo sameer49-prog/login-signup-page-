@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login & Signup Page</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #6a11cb, #fc25c3);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      background: white;
+      width: 380px;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      text-align: center;
+      transition: 0.5s;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      outline: none;
+      font-size: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #fc2525;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #db1a1a;
+    }
+
+    .switch {
+      margin-top: 15px;
+      color: #555;
+    }
+
+    .switch a {
+      color: #fc2525;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* Hide signup form initially */
+    #signupForm {
+      display: none;
+    }
+
+    .message {
+      margin-top: 10px;
+      color: rgb(28, 163, 194);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Login Form -->
+    <div id="loginForm">
+      <h2>Login</h2>
+      <input type="text" id="loginUser" placeholder="Username" required>
+      <input type="password" id="loginPass" placeholder="Password" required>
+      <button onclick="login()">Login</button>
+      <p class="switch">Don’t have an account? <a onclick="showSignup()">Sign up</a></p>
+      <p id="loginMsg" class="message"></p>
+    </div>
+    <br/>
+    <h2> Made by</h2>
+    <br/>
+    <h3> Sameer Muzeeb Husain</h3>
+    <br/>
+    <a href="hello.html">click here</a>
+  
+  <br>
+  
+    <!-- Signup Form -->
+    <div id="signupForm">
+      <h2>Sign Up</h2>
+      <input type="text" id="newUser" placeholder="Create Username" required>
+      <input type="password" id="newPass" placeholder="Create Password" required>
+      <input type="password" id="confirmPass" placeholder="Confirm Password" required>
+      <button onclick="signup()">Register</button>
+      <p class="switch">Already have an account? <a onclick="showLogin()">Login</a></p>
+      <p id="signupMsg" class="message"></p>
+    </div>
+  </div>
+
+
+  <script>
+    // Simple user data storage in localStorage
+    function signup() {
+      const user = document.getElementById("newUser").value.trim();
+      const pass = document.getElementById("newPass").value;
+      const confirm = document.getElementById("confirmPass").value;
+      const msg = document.getElementById("signupMsg");
+
+      if (!user || !pass || !confirm) {
+        msg.style.color = "red";
+        msg.textContent = "Please fill all fields!";
+        return;
+      }
+      if (pass !== confirm) {
+        msg.style.color = "red";
+        msg.textContent = "Passwords do not match!";
+        return;
+      }
+
+      if (localStorage.getItem(user)) {
+        msg.style.color = "red";
+        msg.textContent = "Username already exists!";
+        return;
+      }
+
+      localStorage.setItem(user, pass);
+      msg.style.color = "green";
+      msg.textContent = "Signup successful! Please login.";
+      setTimeout(() => showLogin(), 1000);
+    }
+
+    function login() {
+      const user = document.getElementById("loginUser").value.trim();
+      const pass = document.getElementById("loginPass").value;
+      const msg = document.getElementById("loginMsg");
+
+      if (!user || !pass) {
+        msg.style.color = "red";
+        msg.textContent = "Please fill all fields!";
+        return;
+      }
+
+      const storedPass = localStorage.getItem(user);
+      if (storedPass && storedPass === pass) {
+        msg.style.color = "green";
+        msg.textContent = `Welcome, ${user}!`;
+      } else {
+        msg.style.color = "red";
+        msg.textContent = "Invalid username or password!";
+      }
+    }
+
+    function showSignup() {
+      document.getElementById("loginForm").style.display = "none";
+      document.getElementById("signupForm").style.display = "block";
+    }
+
+    function showLogin() {
+      document.getElementById("signupForm").style.display = "none";
+      document.getElementById("loginForm").style.display = "block";
+    }
+  </script>
+
+</body>
+</html>
